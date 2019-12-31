@@ -2,9 +2,22 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'model/mountain_model.dart';
+import 'detail.dart';
 // import 'mountain_provider.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
+
+
+List<Mountain> _mountainList = <Mountain>[];
+
+// for loading json file which has hyakumeizans' data
+Future<void> loadJsons() async {
+  HyakumeizanList list = new HyakumeizanList();
+  String raw = await rootBundle.loadString('json/hyakumeizan_list.json');
+  List jsonData = json.decode(raw);
+  list = new HyakumeizanList.fromJson(jsonData);
+  _mountainList = list.hyakumeizans;
+}
 
 void main() => runApp(MyApp());
 
@@ -26,18 +39,7 @@ class Hyakumeizans extends StatefulWidget {
 
 
 class HyakumeizansState extends State<Hyakumeizans> {
-  List<Mountain> _mountainList = <Mountain>[];
   final _biggerFont = const TextStyle(fontSize: 18.0);
-
-
-  // for loading json file which has hyakumeizans' data
-  Future<void> loadJsons() async {
-    HyakumeizanList list = new HyakumeizanList();
-    String raw = await rootBundle.loadString('json/hyakumeizan_list.json');
-    List jsonData = json.decode(raw);
-    list = new HyakumeizanList.fromJson(jsonData);
-    _mountainList = list.hyakumeizans;
-  }
 
   Widget _buildList() {
 
@@ -58,7 +60,11 @@ class HyakumeizansState extends State<Hyakumeizans> {
         style: _biggerFont,
       ),
       trailing: FlatButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HyakumeizansDetail(mountain:mountain)),
+            );},
             color: Colors.blue,
             child: Text(
               '詳細',
