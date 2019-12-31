@@ -25,7 +25,6 @@ class Hyakumeizans extends StatefulWidget {
 }
 
 
-// This will be changed to the Name & Prefecture of Hyakumeizan
 class HyakumeizansState extends State<Hyakumeizans> {
   List<Mountain> _mountainList = <Mountain>[];
   final _biggerFont = const TextStyle(fontSize: 18.0);
@@ -58,6 +57,17 @@ class HyakumeizansState extends State<Hyakumeizans> {
         mountain.name,
         style: _biggerFont,
       ),
+      trailing: FlatButton(
+            onPressed: (){},
+            color: Colors.blue,
+            child: Text(
+              '詳細',
+              style: TextStyle(
+                color:Colors.white,
+                fontSize: 16.0
+              ),
+            ),
+          ),
     );
   }
 
