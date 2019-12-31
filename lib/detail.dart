@@ -6,20 +6,29 @@ import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 
 class HyakumeizansDetail extends StatelessWidget {
+  final Mountain mountain;
+
+  HyakumeizansDetail({Key key, @required this.mountain}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("について"),
+        title: Text("${mountain.name}について"),
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-          },
-          child: Text('一覧に戻る'),
+          child: Column(
+            children: <Widget>[ 
+              Text(mountain.detail),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('一覧に戻る'),
+              ),
+            ]
         ),
-      ),
+      )
     );
   }
 }
