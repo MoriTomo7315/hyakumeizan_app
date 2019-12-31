@@ -1,7 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'dart:convert';
+import 'model/mountain_model.dart';
+// import 'mountain_provider.dart';
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
 
 void main() => runApp(MyApp());
 
@@ -10,44 +13,61 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '百名山一覧',
-      home: RandomWords(),
+      home: Hyakumeizans(),
     );
   }
 }
 
-
 // This will be changed appropriate name
-class RandomWords extends StatefulWidget {
+class Hyakumeizans extends StatefulWidget {
   @override
-  RandomWordsState createState() => RandomWordsState();
+  HyakumeizansState createState() => HyakumeizansState();
 }
 
 
-// This will be changed to the Name & Prefecture of Hyakumeizan
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
+class HyakumeizansState extends State<Hyakumeizans> {
+  List<Mountain> _mountainList = <Mountain>[];
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  Widget _buildSuggestions() {
+
+  // for loading json file which has hyakumeizans' data
+  Future<void> loadJsons() async {
+    HyakumeizanList list = new HyakumeizanList();
+    String raw = await rootBundle.loadString('json/hyakumeizan_list.json');
+    List jsonData = json.decode(raw);
+    list = new HyakumeizanList.fromJson(jsonData);
+    _mountainList = list.hyakumeizans;
+  }
+
+  Widget _buildList() {
+
+    loadJsons();
+
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
-      itemBuilder: (context, i) {
-        if (i.isOdd) return Divider();
-
-        final index = i ~/ 2;
-        if (index >= _suggestions.length) {
-          _suggestions.addAll(generateWordPairs().take(10));
-        }
-        return _buildRow(_suggestions[index]);
+      itemCount: _mountainList.length,
+      itemBuilder: (context, int index) {
+        return _buildRow(_mountainList[index]);
       });
   }
 
-  Widget _buildRow(WordPair pair) {
+  Widget _buildRow(Mountain mountain) {
     return ListTile(
       title: Text(
-        pair.asPascalCase,
+        mountain.name,
         style: _biggerFont,
       ),
+      trailing: FlatButton(
+            onPressed: (){},
+            color: Colors.blue,
+            child: Text(
+              '詳細',
+              style: TextStyle(
+                color:Colors.white,
+                fontSize: 16.0
+              ),
+            ),
+          ),
     );
   }
 
@@ -56,7 +76,7 @@ class RandomWordsState extends State<RandomWords> {
       appBar: AppBar(
         title: Text('百名山一覧'),
       ),
-      body: _buildSuggestions(),
+      body: _buildList(),
     );
   }
 }
