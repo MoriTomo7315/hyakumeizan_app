@@ -106,12 +106,23 @@ class HyakumeizansDetail extends StatelessWidget {
   Widget buttonSection(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0,0,0,32.0),
-      child: RaisedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text('一覧に戻る'),
-      ),
+      child: Column(
+        children: <Widget>[
+          RaisedButton(
+            color: Colors.lightGreen,
+            onPressed: () {
+              
+            },
+            child: Text('登ったよ！'),
+          ),
+          RaisedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('一覧に戻る'),
+          ),
+        ],
+      )
     );
   }
 
