@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'hyakumeizan_list.dart';
+import 'list_page.dart';
 import 'hyakumeizan_done.dart';
 
 void main() => runApp(MyApp());
